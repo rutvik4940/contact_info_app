@@ -21,6 +21,7 @@ TextEditingController txtnubmber = TextEditingController();
 GlobalKey<FormState> key = GlobalKey();
 ContactProvider? providerR;
 ContactProvider? providerW;
+String? path;
 
 
 class _AddcontactScreenState extends State<AddcontactScreen> {
@@ -52,7 +53,11 @@ class _AddcontactScreenState extends State<AddcontactScreen> {
                       title: const Text("Pick Image"),
                       content: Column(
                         children: [
-                          CircleAvatar(
+                          providerR!.path==null
+                           ?CircleAvatar(
+                             radius: 60,
+                           )
+                          :CircleAvatar(
                             radius: 60,
                             backgroundImage: FileImage(File(providerW!.path!)),
                           ),
@@ -64,7 +69,7 @@ class _AddcontactScreenState extends State<AddcontactScreen> {
                                   ImagePicker picker = ImagePicker();
                                   XFile? image = await picker.pickImage(
                                       source: ImageSource.camera);
-                                  providerR!.addpath(image!.path);
+                                  providerR!.addPath(image!.path);
                                 },
                                 icon: const Icon(Icons.camera_alt),
                               ),
@@ -73,7 +78,7 @@ class _AddcontactScreenState extends State<AddcontactScreen> {
                                   ImagePicker picker = ImagePicker();
                                   XFile? image = await picker.pickImage(
                                       source: ImageSource.gallery);
-                                  providerR!.addpath(image!.path);
+                                  providerR!.addPath(image!.path);
                                 },
                                 icon: const Icon(Icons.photo),
                               ),
@@ -147,8 +152,13 @@ class _AddcontactScreenState extends State<AddcontactScreen> {
                         contact: txtnubmber.text,
                         image: providerR!.path,
                       );
+                      txtname.clear();
+                      txtnubmber.clear();
+                      txtemail.clear();
                       providerR!.addContact(d1);
                       Navigator.pop(context);
+                      providerR!.stepindex=0;
+                      providerW!.path="";
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("Your data is save"),

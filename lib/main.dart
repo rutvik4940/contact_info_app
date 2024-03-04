@@ -10,13 +10,18 @@ void main()
       providers: [
         ChangeNotifierProvider.value(value: ContactProvider()),
       ],
-      child: Consumer<ContactProvider>(builder: (context, value, child) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          routes: app_routs,
-          theme: ThemeData.light(),
-          darkTheme: ThemeData.dark(),
-          themeMode:value.islight?ThemeMode.dark:ThemeMode.light,
-        ),
+      child: Consumer<ContactProvider>(
+        builder: (context, value, child) {
+          value.getTheme();
+          value.theme = value.changeTheme;
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
+            themeMode: value.mode,
+            routes: app_routs,
+          );
+        },
       ),
     )
   );
